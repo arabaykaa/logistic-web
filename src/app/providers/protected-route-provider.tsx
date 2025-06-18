@@ -1,0 +1,21 @@
+import { useEffect } from "react";
+import { SidebarLayout } from "@/widgets/sidebar-layout/sidebar-layout";
+import { Outlet } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+
+export const ProtectedRouteProvider = () => {
+    // const navigate = useNavigate();
+    const profile = sessionStorage.getItem('profile')
+
+    useEffect(() => {
+        if (!profile) {
+            // navigate("/");
+        }
+    }, [profile])
+
+    return (
+        <SidebarLayout>
+            <Outlet />
+        </SidebarLayout>
+    );
+}
