@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 
 type TableItem = {
     id: number | string;
@@ -12,12 +13,16 @@ interface ReusableTableProps {
     currentPage: number;
     onPageChange: (page: number) => void;
     onActionClick: (item: TableItem) => void;
+    actionComponents?: ReactNode
 }
 
-export const CustomTable = ({ columns, currentPage, data, onActionClick, onPageChange, title, totalPages }: ReusableTableProps) => {
+export default function CustomTable({ columns, currentPage, data, onActionClick, onPageChange, title, totalPages, actionComponents }: ReusableTableProps) {
     return (
         <div className="rounded-2xl shadow-md bg-white p-6 space-y-4">
-            <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
+            <div className="flex justify-between">
+                <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
+                {actionComponents ?? null}
+            </div>
 
             <div className="overflow-x-auto">
                 <table className="w-full table-auto text-left border-collapse">

@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom"
 import { ProtectedRouteProvider } from "../providers";
 import { lazy, Suspense } from "react";
 import { Loading } from "@/widgets";
-import { MainPage } from "@/pages";
+import { MainPage, NotFoundPage } from "@/pages";
 
 const CargoPage = lazy(() => import("@/pages/admin/cargo/cargo"))
 const CargoAddEditPage = lazy(() => import("@/pages/admin/cargo/add-edit"))
@@ -47,6 +47,7 @@ export const ROUTES = () => {
                     </Suspense>
                 }
             />
+            <Route path="*" element={<NotFoundPage />} />
         </Routes >
     );
 }
