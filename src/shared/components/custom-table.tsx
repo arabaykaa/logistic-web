@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-type TableItem = {
+export type TableItem = {
     id: number | string;
     [key: string]: any;
 };
@@ -12,7 +12,7 @@ interface ReusableTableProps {
     totalPages: number;
     currentPage: number;
     onPageChange: (page: number) => void;
-    onActionClick: (item: TableItem) => void;
+    onActionClick: () => void;
     actionComponents?: ReactNode
 }
 
@@ -45,7 +45,7 @@ export default function CustomTable({ columns, currentPage, data, onActionClick,
                                     </td>
                                 ))}
                                 <td className="px-4 py-2">
-                                    <button onClick={() => onActionClick(item)}>
+                                    <button onClick={() => onActionClick()}>
                                         Открыть
                                     </button>
                                 </td>

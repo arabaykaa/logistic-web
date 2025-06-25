@@ -1,42 +1,77 @@
-import { CustomButton } from "@/shared";
-import { lazy, useState } from "react";
+import { apiRequest, CustomButton, Path } from "@/shared";
+import { lazy, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import type { CargoResponseType } from "../model";
+import type { TableItem } from "@/shared/components/custom-table";
 
-const CustomTable = lazy(() => import("@/shared/components/custom-table"))
+const CustomTable = lazy(() => import("@/shared/components/custom-table"));
 
 export default function CargoTableModule() {
     const [page, setPage] = useState(1);
-    const navigate = useNavigate()
+    const [data, setData] = useState<TableItem[]>([]);
+    const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     const columns = [
         { key: "name", label: "Название" },
-        { key: "category", label: "Категория" },
+        { key: "clientName", label: "Клиент" },
+        { key: "latitude", label: "Широта" },
+        { key: "longitude", label: "Долгота" },
+        { key: "positionStatus", label: "Статус" },
+        { key: "createdAt", label: "Создано" },
     ];
 
-    const data = [
-        { id: 1, name: "Элемент 1", category: "A" },
-        { id: 2, name: "Элемент 2", category: "B" },
-    ];
+    useEffect(() => {
+        const fetchData = async () => {
+            // setLoading(true);
+            try {
+                const response = await apiRequest<void, CargoResponseType[]>("GET", Path.Containers.getAll);
+                const mappedData = response.map((item) => ({
+                    ...item,
+                    id: item._id,
+                }));
 
-    const handleAction = (item: any) => {
-        alert(`Открыт элемент: ${item.name}`);
+                setData(mappedData);
+                // setData(response);
+                setError(null);
+            } catch (err) {
+                setError("Ошибка при загрузке данных");
+                console.error(err);
+            } finally {
+                // setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const handleAction = () => {
+        alert(`Открыт элемент:`);
     };
 
     return (
-        <CustomTable
-            title="Карго"
-            columns={columns}
-            data={data}
-            currentPage={page}
-            totalPages={3}
-            onPageChange={(p) => setPage(p)}
-            onActionClick={handleAction}
-            actionComponents={
-                <CustomButton
-                    text="Добавить +"
-                    style={{ width: "fit-content" }}
-                    onClick={() => navigate("add-edit")}
-                />}
-        />
-    )
+        <div>
+            {/* {loading && <p>Загрузка...</p>} */}
+            {error && <p className="text-red-500">{error}</p>}
+
+            {/* {!loading && !error && ( */}
+            <CustomTable
+                title="Карго"
+                columns={columns}
+                data={data}
+                currentPage={page}
+                totalPages={1}
+                onPageChange={(p) => setPage(p)}
+                onActionClick={handleAction}
+                actionComponents={
+                    <CustomButton
+                        text="Добавить +"
+                        style={{ width: "fit-content" }}
+                        onClick={() => navigate("add-edit")}
+                    />
+                }
+            />
+            {/* )} */}
+        </div>
+    );
 }
