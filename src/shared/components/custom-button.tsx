@@ -1,7 +1,8 @@
+import type { ReactNode } from "react"
 
 interface Props extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
     bg?: string
-    text: string
+    text: ReactNode
 }
 
 export const CustomButton = ({ text, style, type = "button", bg = "#25ab6c", ...props }: Props) => {

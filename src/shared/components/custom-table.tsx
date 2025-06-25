@@ -1,4 +1,7 @@
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { CustomButton } from ".";
+import { ChevronLeftIcon, ChevronRightIcon, MenuDeepIcon } from "../assets";
 
 export type TableItem = {
     id: number | string;
@@ -12,11 +15,42 @@ interface ReusableTableProps {
     totalPages: number;
     currentPage: number;
     onPageChange: (page: number) => void;
-    onActionClick: () => void;
-    actionComponents?: ReactNode
+    onEdit: (item: TableItem) => void;
+    onDelete: (id: string | number) => void;
+    actionComponents?: ReactNode;
 }
 
-export default function CustomTable({ columns, currentPage, data, onActionClick, onPageChange, title, totalPages, actionComponents }: ReusableTableProps) {
+export default function CustomTable({
+    columns,
+    currentPage,
+    data,
+    onPageChange,
+    title,
+    totalPages,
+    onEdit,
+    onDelete,
+    actionComponents,
+}: ReusableTableProps) {
+    const [openRowId, setOpenRowId] = useState<string | number | null>(null);
+    const menuRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setOpenRowId(null);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    const toggleMenu = (id: string | number) => {
+        setOpenRowId((prev) => (prev === id ? null : id));
+    };
+
     return (
         <div className="rounded-2xl shadow-md bg-white p-6 space-y-4">
             <div className="flex justify-between">
@@ -24,54 +58,77 @@ export default function CustomTable({ columns, currentPage, data, onActionClick,
                 {actionComponents ?? null}
             </div>
 
-            <div className="overflow-x-auto">
-                <table className="w-full table-auto text-left border-collapse">
-                    <thead className="bg-gray-100 text-gray-600 text-sm">
-                        <tr>
-                            {columns.map((col) => (
-                                <th key={col.key} className="px-4 py-2">
-                                    {col.label}
-                                </th>
-                            ))}
-                            <th className="px-4 py-2">Действие</th>
-                        </tr>
-                    </thead>
-                    <tbody className="text-gray-800 text-sm divide-y divide-gray-200">
-                        {data.map((item) => (
-                            <tr key={item.id} className="hover:bg-gray-50">
-                                {columns.map((col) => (
-                                    <td key={col.key} className="px-4 py-2">
-                                        {item[col.key]}
-                                    </td>
-                                ))}
-                                <td className="px-4 py-2">
-                                    <button onClick={() => onActionClick()}>
-                                        Открыть
-                                    </button>
-                                </td>
-                            </tr>
+            <table className="w-full table-auto text-left border-collapse">
+                <thead className="bg-gray-100 text-gray-600 text-sm">
+                    <tr>
+                        {columns.map((col) => (
+                            <th key={col.key} className="px-4 py-2">
+                                {col.label}
+                            </th>
                         ))}
-                    </tbody>
-                </table>
-            </div>
+                        <th className="px-4 py-2 flex justify-end">Действия</th>
+                    </tr>
+                </thead>
+                <tbody className="text-gray-800 text-sm divide-y divide-gray-200">
+                    {data.map((item) => (
+                        <tr key={item.id} className="hover:bg-gray-50 relative">
+                            {columns.map((col) => (
+                                <td key={col.key} className="px-4 py-2">
+                                    {item[col.key]}
+                                </td>
+                            ))}
+                            <td className="px-4 py-2 flex justify-end">
+                                <div className="relative" ref={menuRef}>
+                                    <CustomButton
+                                        text={<MenuDeepIcon />}
+                                        style={{ width: "fit-content", fontSize: 12, padding: 2 }}
+                                        onClick={() => toggleMenu(item.id)}
+                                    />
+                                    {openRowId === item.id && (
+                                        <div className="absolute z-10 mt-1 bg-white border border-gray-200 rounded shadow-md right-0">
+                                            <button
+                                                onClick={() => onEdit(item)}
+                                                className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-100 cursor-pointer"
+                                            >
+                                                Редактировать
+                                            </button>
+                                            <button
+                                                onClick={() => onDelete(item.id)}
+                                                className="block w-full px-4 py-2 text-sm text-left text-red-600 hover:bg-gray-100 cursor-pointer"
+                                            >
+                                                Удалить
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
 
-            <div className="flex justify-end items-center gap-2">
+            <div className="flex justify-end items-center gap-2 mt-4">
                 <button
                     onClick={() => onPageChange(currentPage - 1)}
                     disabled={currentPage === 1}
+                    className={`w-6 h-6 flex items-center justify-center rounded-full transition
+                ${currentPage === 1 ? "bg-gray-200 text-gray-400 cursor-not-allowed" : "bg-gray-100 hover:bg-gray-200 text-gray-700 cursor-pointer"}`}
                 >
-                    {/* <ChevronLeft className="w-4 h-4" /> */}{"<"}
+                    <ChevronLeftIcon />
                 </button>
-                <span className="text-sm text-gray-700">
+                <span className="text-sm text-gray-700 px-2">
                     Страница {currentPage} из {totalPages}
                 </span>
                 <button
                     onClick={() => onPageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
+                    className={`w-6 h-6 flex items-center justify-center rounded-full transition
+                ${currentPage === totalPages ? "bg-gray-200 text-gray-400 cursor-not-allowed" : "bg-gray-100 hover:bg-gray-200 text-gray-700 cursor-pointer "}`}
                 >
-                    {/* <ChevronRight className="w-4 h-4" /> */}{">"}
+                    <ChevronRightIcon />
                 </button>
             </div>
+
         </div>
     );
 }

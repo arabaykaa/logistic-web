@@ -23,7 +23,15 @@ export const ROUTES = () => {
                     }
                 />
                 <Route
-                    path="/cargo/add-edit"
+                    path="/cargo/add"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <CargoAddEditPage />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="/cargo/edit/:containerId"
                     element={
                         <Suspense fallback={<Loading />}>
                             <CargoAddEditPage />

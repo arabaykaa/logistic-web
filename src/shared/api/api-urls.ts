@@ -9,6 +9,7 @@ export class Path {
   static Containers = class {
     static create = baseApi("containers");
     static getAll = baseApi("containers");
+    static getById = (id: string | number) => baseApi(`containers/user/${id}`);
     static update = (id: string | number) => baseApi(`containers/${id}`);
     static delete = (id: string | number) => baseApi(`containers/${id}`);
   };

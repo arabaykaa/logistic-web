@@ -1,5 +1,5 @@
 import { apiRequest, CustomButton, Path } from "@/shared";
-import { lazy, useEffect, useState } from "react";
+import { lazy, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { CargoResponseType } from "../model";
 import type { TableItem } from "@/shared/components/custom-table";
@@ -21,57 +21,58 @@ export default function CargoTableModule() {
         { key: "createdAt", label: "Создано" },
     ];
 
+    const fetchData = useCallback(async () => {
+        try {
+            const response = await apiRequest<void, CargoResponseType[]>("GET", Path.Containers.getAll);
+            const mappedData = response.map((item) => ({
+                ...item,
+                id: item._id,
+            }));
+            setData(mappedData);
+            setError(null);
+        } catch (err) {
+            console.error(err);
+            setError("Ошибка при загрузке данных");
+        }
+    }, [])
+
     useEffect(() => {
-        const fetchData = async () => {
-            // setLoading(true);
-            try {
-                const response = await apiRequest<void, CargoResponseType[]>("GET", Path.Containers.getAll);
-                const mappedData = response.map((item) => ({
-                    ...item,
-                    id: item._id,
-                }));
-
-                setData(mappedData);
-                // setData(response);
-                setError(null);
-            } catch (err) {
-                setError("Ошибка при загрузке данных");
-                console.error(err);
-            } finally {
-                // setLoading(false);
-            }
-        };
-
         fetchData();
     }, []);
 
-    const handleAction = () => {
-        alert(`Открыт элемент:`);
+    const deleteItem = async (id: string | number) => {
+        const confirmed = window.confirm("Вы уверены, что хотите удалить этот контейнер?");
+        if (!confirmed) return;
+
+        try {
+            await apiRequest("DELETE", Path.Containers.delete(id));
+            setData((prev) => prev.filter((item) => item.id !== id));
+        } catch (err) {
+            console.error(err);
+            alert("Ошибка при удалении");
+        }
     };
 
     return (
-        <div>
-            {/* {loading && <p>Загрузка...</p>} */}
+        <>
             {error && <p className="text-red-500">{error}</p>}
-
-            {/* {!loading && !error && ( */}
             <CustomTable
-                title="Карго"
+                title="Контейнеры"
                 columns={columns}
                 data={data}
                 currentPage={page}
                 totalPages={1}
                 onPageChange={(p) => setPage(p)}
-                onActionClick={handleAction}
+                onEdit={(item) => navigate(`edit/${item.id}`)}
+                onDelete={(id) => deleteItem(id)}
                 actionComponents={
                     <CustomButton
                         text="Добавить +"
                         style={{ width: "fit-content" }}
-                        onClick={() => navigate("add-edit")}
+                        onClick={() => navigate("add")}
                     />
                 }
             />
-            {/* )} */}
-        </div>
+        </>
     );
 }
