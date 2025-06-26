@@ -15,10 +15,10 @@ export const MainPage = () => {
             <div className="absolute inset-0 bg-black/50 z-0" />
 
             {/* Content */}
-            <div className="relative z-10 w-full h-full flex flex-row items-center gap-8 px-[7%]">
-                {/* Left Container */}
-                <div className="w-1/2 h-[45rem] bg-white/85 shadow-lg rounded-xl py-8 px-4 flex flex-col gap-4">
-                    <div className="h-1/3">
+            <div className="relative z-10 w-full h-full flex flex-col md:flex-row items-center gap-4 md:gap-8 px-4 md:px-[7%] py-4">
+                {/* Input Container */}
+                <div className="w-full md:w-1/2 h-auto md:h-[45rem] bg-white/85 shadow-lg rounded-xl p-4 flex flex-col gap-4">
+                    <div className="h-1/4 md:h-1/3 flex justify-center items-center">
                         <img src="/logo.png" alt="Logo" className="w-4/5 h-auto object-contain" />
                     </div>
 
@@ -37,7 +37,7 @@ export const MainPage = () => {
                 </div>
 
                 {/* Map Widget */}
-                <div className="w-full h-[45rem] rounded-lg overflow-hidden">
+                <div className="w-full h-[25rem] md:h-[45rem] rounded-lg overflow-hidden">
                     <MapWidget />
                 </div>
             </div>
