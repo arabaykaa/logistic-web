@@ -1,13 +1,32 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { MapWidget } from "@/widgets";
-import { CustomButton, TextInput } from "@/shared";
+import { apiRequest, CustomButton, Path, TextInput } from "@/shared";
+import type { CargoResponseType } from "@/entities/cargo/model";
 
 export const MainPage = () => {
     const [code, setCode] = useState("");
+    const [data, setData] = useState<CargoResponseType | null>(null)
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCode(e.target.value);
     };
+
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        if (!code) return;
+
+        try {
+            const response = await apiRequest<void, CargoResponseType>(
+                "GET",
+                Path.Containers.getById(code)
+            );
+            setData(response)
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    console.log(data, "data");
 
     return (
         <div className="min-h-screen relative flex items-center justify-center bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/logistic.webp')" }}>
@@ -21,19 +40,20 @@ export const MainPage = () => {
                     <div className="h-1/4 md:h-1/3 flex justify-center items-center">
                         <img src="/logo.png" alt="Logo" className="w-4/5 h-auto object-contain" />
                     </div>
-
-                    <TextInput
-                        id="code-input"
-                        placeholder="Введите код или адрес..."
-                        value={code}
-                        onChange={handleChange}
-                        icon={
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM10 14a4.5 4.5 0 110-9 4.5 4.5 0 010 9z" />
-                            </svg>
-                        }
-                    />
-                    <CustomButton text="Подтвердить" />
+                    <form onSubmit={handleSubmit}>
+                        <TextInput
+                            id="code-input"
+                            placeholder="Введите код или адрес..."
+                            value={code}
+                            onChange={handleChange}
+                            icon={
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM10 14a4.5 4.5 0 110-9 4.5 4.5 0 010 9z" />
+                                </svg>
+                            }
+                        />
+                        <CustomButton type="submit" text="Подтвердить" style={{ marginTop: "1rem" }} />
+                    </form>
                 </div>
 
                 {/* Map Widget */}
