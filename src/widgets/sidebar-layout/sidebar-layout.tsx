@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { BurgerMenuIcon, CancelIcon, cn, TruckIcon } from "@/shared";
 import { Link } from "react-router-dom";
+import { LanguageChanger } from "../change-lang";
+import { useTranslation } from "react-i18next";
 
 export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
+    const { t } = useTranslation()
     const [isOpen, setIsOpen] = useState(true);
 
     const toggleSidebar = () => setIsOpen(!isOpen);
@@ -29,7 +32,7 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
                         <Link to="/cargo">
                             <div className="flex items-center gap-2">
                                 <TruckIcon />
-                                {isOpen && <span>Cargo</span>}
+                                {isOpen && <span>{t("sidebar.containers")}</span>}
                             </div>
                         </Link>
                     </nav>
@@ -38,6 +41,11 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
 
             {/* Main content */}
             <main className="flex-1 bg-gray-100 p-6 overflow-auto">
+                <div
+                    style={{ border: "2px solid rgba(0, 0, 0, 0.2)" }}
+                    className="flex items-center p-2 bg-[white] rounded-md">
+                    <LanguageChanger />
+                </div>
                 {children}
             </main>
         </div>

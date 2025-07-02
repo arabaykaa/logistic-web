@@ -3,22 +3,23 @@ import { lazy, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { CargoResponseType } from "../model";
 import type { TableItem } from "@/shared/components/custom-table";
+import { useTranslation } from "react-i18next";
 
 const CustomTable = lazy(() => import("@/shared/components/custom-table"));
 
 export default function CargoTableModule() {
+    const { t } = useTranslation()
     const [page, setPage] = useState(1);
     const [data, setData] = useState<TableItem[]>([]);
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
     const columns = [
-        { key: "name", label: "Название" },
-        { key: "clientName", label: "Клиент" },
-        { key: "latitude", label: "Широта" },
-        { key: "longitude", label: "Долгота" },
-        { key: "positionStatus", label: "Статус" },
-        { key: "createdAt", label: "Создано" },
+        { key: "clientName", label: "clientName" },
+        { key: "latitude", label: "latitude" },
+        { key: "longitude", label: "longitude" },
+        { key: "deliveryDate", label: "deliveryDate", type: "date" },
+        { key: "createdAt", label: "createdAt", type: "date" },
     ];
 
     const fetchData = useCallback(async () => {
@@ -57,7 +58,7 @@ export default function CargoTableModule() {
         <>
             {error && <p className="text-red-500">{error}</p>}
             <CustomTable
-                title="Контейнеры"
+                title={t("table.title.containers")}
                 columns={columns}
                 data={data}
                 currentPage={page}
@@ -67,7 +68,7 @@ export default function CargoTableModule() {
                 onDelete={(id) => deleteItem(id)}
                 actionComponents={
                     <CustomButton
-                        text="Добавить +"
+                        text={t("table.buttons.add")}
                         style={{ width: "fit-content" }}
                         onClick={() => navigate("add")}
                     />

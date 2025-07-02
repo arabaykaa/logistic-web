@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { CustomButton } from ".";
 import { ChevronLeftIcon, ChevronRightIcon, MenuDeepIcon } from "../assets";
+import { useTranslation } from "react-i18next";
 
 export type TableItem = {
     id: number | string;
@@ -10,7 +11,7 @@ export type TableItem = {
 
 interface ReusableTableProps {
     title: string;
-    columns: { key: string; label: string }[];
+    columns: { key: string; label: string, type?: string }[];
     data: TableItem[];
     totalPages: number;
     currentPage: number;
@@ -31,6 +32,7 @@ export default function CustomTable({
     onDelete,
     actionComponents,
 }: ReusableTableProps) {
+    const { t } = useTranslation()
     const [openRowId, setOpenRowId] = useState<string | number | null>(null);
     const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -63,10 +65,10 @@ export default function CustomTable({
                     <tr>
                         {columns.map((col) => (
                             <th key={col.key} className="px-4 py-2">
-                                {col.label}
+                                {t(`form.label.${col.label}`)}
                             </th>
                         ))}
-                        <th className="px-4 py-2 flex justify-end">Действия</th>
+                        <th className="px-4 py-2 flex justify-end">{t("table.head.action")}</th>
                     </tr>
                 </thead>
                 <tbody className="text-gray-800 text-sm divide-y divide-gray-200">
@@ -74,7 +76,7 @@ export default function CustomTable({
                         <tr key={item.id} className="hover:bg-gray-50 relative">
                             {columns.map((col) => (
                                 <td key={col.key} className="px-4 py-2">
-                                    {item[col.key]}
+                                    {col.type === "date" ? new Date(item[col.key]).toLocaleString("ru-RU").replace(/\//g, ".").replace(",", "") : item[col.key]}
                                 </td>
                             ))}
                             <td className="px-4 py-2 flex justify-end">
@@ -90,13 +92,13 @@ export default function CustomTable({
                                                 onClick={() => onEdit(item)}
                                                 className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-100 cursor-pointer"
                                             >
-                                                Редактировать
+                                                {t("table.buttons.edit")}
                                             </button>
                                             <button
                                                 onClick={() => onDelete(item.id)}
                                                 className="block w-full px-4 py-2 text-sm text-left text-red-600 hover:bg-gray-100 cursor-pointer"
                                             >
-                                                Удалить
+                                                {t("table.buttons.delete")}
                                             </button>
                                         </div>
                                     )}
@@ -117,7 +119,7 @@ export default function CustomTable({
                     <ChevronLeftIcon />
                 </button>
                 <span className="text-sm text-gray-700 px-2">
-                    Страница {currentPage} из {totalPages}
+                    {t("table.buttons.page")} {currentPage}   {t("table.buttons.from")} {totalPages}
                 </span>
                 <button
                     onClick={() => onPageChange(currentPage + 1)}

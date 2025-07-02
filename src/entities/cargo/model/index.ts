@@ -1,8 +1,10 @@
+import type { OptionType } from "@/shared/global-types";
+
 export interface CargoRequestType {
   clientName: string;
   containerNumber: string;
   expeditor: string;
-  isRented: string;
+  isRented: OptionType | null;
   deliveryDate: Date | null;
   portEntryDate: Date | null;
   documentDeadline: Date | null;

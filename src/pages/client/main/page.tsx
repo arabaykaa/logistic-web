@@ -1,9 +1,11 @@
 import { useState, type FormEvent } from "react";
-import { MapWidget } from "@/widgets";
+import { LanguageChanger, MapWidget } from "@/widgets";
 import { apiRequest, CustomButton, Path, TextInput } from "@/shared";
 import type { CargoResponseType } from "@/entities/cargo/model";
+import { useTranslation } from "react-i18next";
 
 export const MainPage = () => {
+    const { t } = useTranslation()
     const [code, setCode] = useState("");
     const [data, setData] = useState<CargoResponseType | null>(null)
 
@@ -37,13 +39,16 @@ export const MainPage = () => {
             <div className="relative z-10 w-full h-full flex flex-col md:flex-row items-center gap-4 md:gap-8 px-4 md:px-[7%] py-4">
                 {/* Input Container */}
                 <div className="w-full md:w-1/2 h-auto md:h-[45rem] bg-white/85 shadow-lg rounded-xl p-4 flex flex-col gap-4">
-                    <div className="h-1/4 md:h-1/3 flex justify-center items-center">
+                    <div className="flex items-center justify-end">
+                        <LanguageChanger />
+                    </div>
+                    <div className="h-1/4 md:h-1/5 flex justify-center items-center">
                         <img src="/logo.png" alt="Logo" className="w-4/5 h-auto object-contain" />
                     </div>
                     <form onSubmit={handleSubmit}>
                         <TextInput
                             id="code-input"
-                            placeholder="Введите код или адрес..."
+                            placeholder={t("main.input.enterCode")}
                             value={code}
                             onChange={handleChange}
                             icon={
@@ -52,7 +57,7 @@ export const MainPage = () => {
                                 </svg>
                             }
                         />
-                        <CustomButton type="submit" text="Подтвердить" style={{ marginTop: "1rem" }} />
+                        <CustomButton type="submit" text={t("main.buttons.submit")} style={{ marginTop: "1rem" }} />
                     </form>
                 </div>
 

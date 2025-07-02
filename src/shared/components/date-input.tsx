@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import type { JSX } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     icon?: JSX.Element;
@@ -22,6 +23,7 @@ export const DateInput = ({
     name,
     className = ""
 }: Props) => {
+    const { t } = useTranslation()
     const CustomInput = forwardRef<HTMLInputElement, any>(({ value, onClick }, ref) => (
         <div className="relative w-full">
             <input
@@ -33,7 +35,7 @@ export const DateInput = ({
                 onClick={onClick}
                 ref={ref}
                 className={`
-          w-full px-3 pr-10 py-2 text-base rounded-md bg-white text-gray-900 border border-gray-300
+          w-full px-3 pr-10 py-[5.2px] text-base rounded-md bg-white text-gray-900 border border-gray-300
           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
           transition-all duration-200 cursor-pointer
           ${className}
@@ -54,7 +56,7 @@ export const DateInput = ({
 
     return (
         <div className="w-full">
-            {label && <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>}
+            {label && <label className="block text-xs font-semibold mb-1">{t(`form.label.${label}`)}</label>}
             <DatePicker
                 selected={value}
                 onChange={onChange}

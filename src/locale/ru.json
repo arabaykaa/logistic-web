@@ -1,0 +1,75 @@
+{
+  "translation": {
+    "companyName": "ГКНБ",
+    "lang": {
+      "ru": "Русский",
+      "kg": "Кыргызский",
+      "en": "Английский"
+    },
+    "main": {
+      "input": {
+        "enterCode": "Введите код груза"
+      },
+      "buttons": {
+        "submit": "Подтвердить"
+      }
+    },
+    "sidebar": {
+      "containers": "Контейнеры"
+    },
+    "pages": {
+      "titles": {
+        "add_container": "Добавление груза"
+      },
+      "buttons": {
+        "back": "Назад",
+        "submit": "Подтвердить"
+      }
+    },
+    "form": {
+      "label": {
+        "clientName": "ФИО клиента",
+        "containerNumber": "Номер контейнера",
+        "expeditor": "Экспедитор",
+        "isRented": "Покупка/Аренда",
+        "deliveryDate": "Дата поставки контейнера",
+        "portEntryDate": "Дата въезда в порт",
+        "documentDeadline": "Крайний срок сдачи документов(KST)",
+        "documentReceivedDate": "Время получения документов от клиента",
+        "etd": "ETD",
+        "atd": "ATD (Дата отправки из порта)",
+        "portStorageDays": "Сутки хранения в порту",
+        "extraCosts": "Доп. расходы возможные",
+        "chinaArrivalDate": "Дата прибытия в порт Китая",
+        "inlandDepartureDate": "Дата отправки из порта Китая(По авто/ЖД)",
+        "kashgarArrivalDate": "Дата прибытия в Кашгар/Топа",
+        "positionStatus": "Положение контейнера",
+        "delayReason": "Причина задержки парома",
+        "finalArrivalDate": "Дата прибытия",
+        "notes": "Примечание",
+        "latitude": "Широта",
+        "longitude": "Долгота",
+        "createdAt": "Дата создания",
+        "updatedAt": "Дата редактирования",
+        "choose": "Выберите вариант",
+        "purchase": "Покупка",
+        "rent": "Аренда"
+      }
+    },
+    "table": {
+      "title": {
+        "containers": "Контейнеры"
+      },
+      "head": {
+        "action": "Действия"
+      },
+      "buttons": {
+        "edit": "Редактировать",
+        "delete": "Удалить",
+        "page": "Страница",
+        "from": "из",
+        "add": "Добавить +"
+      }
+    }
+  }
+}
