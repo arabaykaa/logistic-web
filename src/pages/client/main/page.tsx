@@ -42,7 +42,7 @@ export const MainPage = () => {
                     <div className="flex items-center justify-end">
                         <LanguageChanger />
                     </div>
-                    <div className="h-1/4 md:h-1/5 flex justify-center items-center">
+                    <div className="h-1/4 md:h-1/5 flex justify-center items-center mb-8">
                         <img src="/logo.png" alt="Logo" className="w-4/5 h-auto object-contain" />
                     </div>
                     <form onSubmit={handleSubmit}>

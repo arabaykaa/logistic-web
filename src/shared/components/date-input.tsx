@@ -3,6 +3,7 @@ import type { JSX } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from "react-i18next";
+import { CalendarIcon } from "../assets";
 
 interface Props {
     icon?: JSX.Element;
@@ -41,14 +42,12 @@ export const DateInput = ({
           ${className}
         `}
             />
-            {icon && (
-                <div
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
-                    onClick={onClick}
-                >
-                    {icon}
-                </div>
-            )}
+            <div
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
+                onClick={onClick}
+            >
+                {icon ?? <CalendarIcon />}
+            </div>
         </div>
     ));
 

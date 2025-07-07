@@ -34,7 +34,7 @@ export default function LoginForm() {
             <div className="mb-4">
                 <TextInput
                     required
-                    label="Логин"
+                    label="login"
                     id="login"
                     type="text"
                     value={login}
@@ -46,7 +46,7 @@ export default function LoginForm() {
             <div className="mb-6">
                 <TextInput
                     required
-                    label="Пароль"
+                    label="password"
                     id="password"
                     type="password"
                     value={password}
