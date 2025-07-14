@@ -1,21 +1,26 @@
 import { apiRequest, CustomButton, Path } from "@/shared";
 import { lazy, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { CargoResponseType } from "../model";
+import type { CargoResponseTypeForTable } from "../model";
 import type { TableItem } from "@/shared/components/custom-table";
 import { useTranslation } from "react-i18next";
 
 const CustomTable = lazy(() => import("@/shared/components/custom-table"));
 
+const LIMIT = 10;
+
 export default function CargoTableModule() {
     const { t } = useTranslation()
     const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const [data, setData] = useState<TableItem[]>([]);
     const [error, setError] = useState<string | null>(null);
+
     const navigate = useNavigate();
 
     const columns = [
         { key: "clientName", label: "clientName" },
+        { key: "owner", label: "owner" },
         { key: "latitude", label: "latitude" },
         { key: "longitude", label: "longitude" },
         { key: "deliveryDate", label: "deliveryDate", type: "date" },
@@ -24,22 +29,26 @@ export default function CargoTableModule() {
 
     const fetchData = useCallback(async () => {
         try {
-            const response = await apiRequest<void, CargoResponseType[]>("GET", Path.Containers.getAll);
-            const mappedData = response.map((item) => ({
+            const response = await apiRequest<void, CargoResponseTypeForTable>(
+                "GET",
+                Path.Containers.getAll({ page: page, limit: LIMIT })
+            );
+            const mappedData = response.data.map((item) => ({
                 ...item,
                 id: item._id,
             }));
             setData(mappedData);
+            setTotalPages(response.totalPages);
             setError(null);
         } catch (err) {
             console.error(err);
             setError("Ошибка при загрузке данных");
         }
-    }, [])
+    }, [page])
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [page]);
 
     const deleteItem = async (id: string | number) => {
         const confirmed = window.confirm("Вы уверены, что хотите удалить этот контейнер?");
@@ -62,7 +71,7 @@ export default function CargoTableModule() {
                 columns={columns}
                 data={data}
                 currentPage={page}
-                totalPages={1}
+                totalPages={totalPages}
                 onPageChange={(p) => setPage(p)}
                 onEdit={(item) => navigate(`edit/${item.id}`)}
                 onDelete={(id) => deleteItem(id)}

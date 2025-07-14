@@ -43,8 +43,8 @@ export default function CargoFormModule() {
 
             setFormData({
                 ...response,
-                latitude: response.latitude ?? 0,
-                longitude: response.longitude ?? 0,
+                latitude: response.latitude ?? null,
+                longitude: response.longitude ?? null,
                 deliveryDate: response.deliveryDate ? new Date(response.deliveryDate) : null,
                 portEntryDate: response.portEntryDate ? new Date(response.portEntryDate) : null,
                 documentDeadline: response.documentDeadline ? new Date(response.documentDeadline) : null,
@@ -83,7 +83,7 @@ export default function CargoFormModule() {
         const value = e.target.value;
         setFormData((prev) => ({
             ...prev,
-            [field]: field === "latitude" || field === "longitude" ? parseFloat(value) || 0 : value,
+            [field]: value,
         }));
     };
 
@@ -165,8 +165,20 @@ export default function CargoFormModule() {
                     <DateInput label="finalArrivalDate" value={formData.finalArrivalDate} onChange={handleDateChange("finalArrivalDate")} />
 
                     <TextInput label="notes" value={formData.notes} onChange={handleChange("notes")} />
-                    <TextInput label="latitude" value={formData.latitude.toString()} onChange={handleChange("latitude")} />
-                    <TextInput label="longitude" value={formData.longitude.toString()} onChange={handleChange("longitude")} />
+
+                    <TextInput
+                        type="number"
+                        label="latitude"
+                        value={formData.latitude?.toString()}
+                        onChange={handleChange("latitude")}
+                    />
+
+                    <TextInput
+                        type="number"
+                        label="longitude"
+                        value={formData.longitude?.toString()}
+                        onChange={handleChange("longitude")}
+                    />
 
                     <DateInput label="createdAt" value={formData.createdAt} onChange={handleDateChange("createdAt")} />
                     <DateInput label="updatedAt" value={formData.updatedAt} onChange={handleDateChange("updatedAt")} />
@@ -202,8 +214,8 @@ const initialState: CargoRequestType = {
     delayReason: "",
     finalArrivalDate: null,
     notes: "",
-    latitude: 0,
-    longitude: 0,
+    latitude: null,
+    longitude: null,
     createdAt: null,
     updatedAt: null,
 };

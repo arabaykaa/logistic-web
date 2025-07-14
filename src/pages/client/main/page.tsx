@@ -43,7 +43,7 @@ export const MainPage = () => {
                         <LanguageChanger />
                     </div>
                     <div className="h-1/4 md:h-1/5 flex justify-center items-center mb-8">
-                        <img src="/logo.png" alt="Logo" className="w-4/5 h-auto object-contain" />
+                        <img src="/logo.webp" alt="Logo" />
                     </div>
                     <form onSubmit={handleSubmit}>
                         <TextInput
@@ -63,7 +63,12 @@ export const MainPage = () => {
 
                 {/* Map Widget */}
                 <div className="w-full h-[25rem] md:h-[45rem] rounded-lg overflow-hidden">
-                    <MapWidget />
+                    <MapWidget
+                        latitude={data?.latitude ?? 42.8738263142433}
+                        longitude={data?.longitude ?? 74.5798706600225}
+                        clientName={data?.clientName ?? ""}
+                        containerNumber={data?.containerNumber ?? ""}
+                    />
                 </div>
             </div>
         </div>

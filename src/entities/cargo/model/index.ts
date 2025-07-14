@@ -20,12 +20,19 @@ export interface CargoRequestType {
   delayReason: string;
   finalArrivalDate: Date | null;
   notes: string;
-  latitude: number;
-  longitude: number;
+  latitude: number | null;
+  longitude: number | null;
   createdAt: Date | null;
   updatedAt: Date | null;
 }
 
 export interface CargoResponseType extends CargoRequestType {
   _id: string;
+}
+
+export interface CargoResponseTypeForTable {
+  data: CargoResponseType[];
+  currentPage: number;
+  totalCount: number;
+  totalPages: number;
 }
