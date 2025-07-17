@@ -28,8 +28,6 @@ export const MainPage = () => {
         }
     };
 
-    console.log(data, "data");
-
     return (
         <div className="min-h-screen relative flex items-center justify-center bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/logistic.webp')" }}>
             {/* Overlay */}
@@ -48,7 +46,7 @@ export const MainPage = () => {
                     <form onSubmit={handleSubmit}>
                         <TextInput
                             id="code-input"
-                            placeholder={t("main.input.enterCode")}
+                            customPlaceholder={t("main.input.enterCode")}
                             value={code}
                             onChange={handleChange}
                             icon={

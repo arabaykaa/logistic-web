@@ -1,12 +1,78 @@
 {
   "translation": {
-    "companyName": "ЮМ",
+    "companyName": "Inter Trans Logistic",
     "lang": {
-      "ru": "Орусча",
+      "ru": "Русский",
       "kg": "Кыргызча",
       "en": "Англисче"
     },
-    "sidebar": {},
-    "pages": {}
+    "main": {
+      "input": {
+        "enterCode": "Жүктүн кодун киргизиңиз"
+      },
+      "buttons": {
+        "submit": "Ырастоо"
+      }
+    },
+    "sidebar": {
+      "containers": "Контейнерлер"
+    },
+    "pages": {
+      "titles": {
+        "add_container": "Жүк кошуу"
+      },
+      "buttons": {
+        "back": "Артка",
+        "submit": "Ырастоо"
+      }
+    },
+    "form": {
+      "label": {
+        "clientName": "Кардардын аты-жөнү",
+        "containerNumber": "Контейнер номери",
+        "expeditor": "Экспедитор",
+        "isRented": "Сатып алуу/Ижара",
+        "deliveryDate": "Контейнер жеткирүү датасы",
+        "portEntryDate": "Портко кирген күнү",
+        "documentDeadline": "Документтерди тапшыруунун акыркы мөөнөтү (KST)",
+        "documentReceivedDate": "Кардардан документ алынган убакыт",
+        "etd": "ETD",
+        "atd": "ATD (Порттон жөнөтүлгөн күнү)",
+        "portStorageDays": "Портто сакталган күндөр",
+        "extraCosts": "Кошумча чыгымдар мүмкүн",
+        "chinaArrivalDate": "Кытай портуна келген күнү",
+        "inlandDepartureDate": "Кытайдан жөнөгөн күнү (Унаа/Темир жол)",
+        "kashgarArrivalDate": "Кашгар/Топого келген күнү",
+        "positionStatus": "Контейнердин абалы",
+        "delayReason": "Кечигүүнүн себеби",
+        "finalArrivalDate": "Жеткен күнү",
+        "notes": "Эскертүү",
+        "latitude": "Түндүк кеңдик",
+        "longitude": "Чыгыш узундук",
+        "createdAt": "Түзүлгөн күнү",
+        "updatedAt": "Түзөтүлгөн күнү",
+        "choose": "Тандоо",
+        "purchase": "Сатып алуу",
+        "rent": "Ижара",
+        "login": "Кирүү",
+        "password": "Сырсөз",
+        "owner": "Картадан издөө коду"
+      }
+    },
+    "table": {
+      "title": {
+        "containers": "Контейнерлер"
+      },
+      "head": {
+        "action": "Аракеттер"
+      },
+      "buttons": {
+        "edit": "Түзөтүү",
+        "delete": "Өчүрүү",
+        "page": "Бет",
+        "from": " ичинен",
+        "add": "Кошуу +"
+      }
+    }
   }
 }

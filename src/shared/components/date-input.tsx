@@ -31,16 +31,17 @@ export const DateInput = ({
                 type="text"
                 readOnly
                 value={value}
-                placeholder={placeholder}
+                placeholder={placeholder ? t(`form.label.${placeholder}`) : ""}
                 name={name}
                 onClick={onClick}
                 ref={ref}
                 className={`
-          w-full px-3 pr-10 py-[5.2px] text-base rounded-md bg-white text-gray-900 border border-gray-300
-          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-          transition-all duration-200 cursor-pointer
-          ${className}
-        `}
+                    w-full px-3 pr-10 py-[5.2px] text-base rounded-md bg-white text-gray-900 border border-gray-300
+                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                    transition-all duration-200 cursor-pointer
+                    placeholder-gray-400 placeholder:text-sm
+                    ${className}
+                 `}
             />
             <div
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"

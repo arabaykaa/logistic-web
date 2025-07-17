@@ -48,4 +48,9 @@ const customStyles: StylesConfig<OptionType, false> = {
         backgroundColor: '#fff',
         zIndex: 2,
     }),
+    placeholder: (provided) => ({
+        ...provided,
+        fontSize: "14px",
+        color: "oklch(70.7% 0.022 261.325)"
+    })
 };

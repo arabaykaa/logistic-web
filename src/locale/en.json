@@ -1,12 +1,78 @@
 {
   "translation": {
-    "companyName": "ЮМ",
+    "companyName": "Inter Trans Logistic",
     "lang": {
       "ru": "Russian",
       "kg": "Kyrgyz",
       "en": "English"
     },
-    "sidebar": {},
-    "pages": {}
+    "main": {
+      "input": {
+        "enterCode": "Enter cargo code"
+      },
+      "buttons": {
+        "submit": "Submit"
+      }
+    },
+    "sidebar": {
+      "containers": "Containers"
+    },
+    "pages": {
+      "titles": {
+        "add_container": "Add Cargo"
+      },
+      "buttons": {
+        "back": "Back",
+        "submit": "Submit"
+      }
+    },
+    "form": {
+      "label": {
+        "clientName": "Client Full Name",
+        "containerNumber": "Container Number",
+        "expeditor": "Expeditor",
+        "isRented": "Purchase/Rent",
+        "deliveryDate": "Container Delivery Date",
+        "portEntryDate": "Port Entry Date",
+        "documentDeadline": "Document Submission Deadline (KST)",
+        "documentReceivedDate": "Document Received Time from Client",
+        "etd": "ETD",
+        "atd": "ATD (Departure Date from Port)",
+        "portStorageDays": "Port Storage Days",
+        "extraCosts": "Possible Extra Costs",
+        "chinaArrivalDate": "Arrival Date at China Port",
+        "inlandDepartureDate": "Departure from China Port (By Truck/Rail)",
+        "kashgarArrivalDate": "Arrival in Kashgar/Topa",
+        "positionStatus": "Container Status",
+        "delayReason": "Reason for Ferry Delay",
+        "finalArrivalDate": "Final Arrival Date",
+        "notes": "Notes",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
+        "createdAt": "Created At",
+        "updatedAt": "Last Edited",
+        "choose": "Choose an option",
+        "purchase": "Purchase",
+        "rent": "Rent",
+        "login": "Login",
+        "password": "Password",
+        "owner": "Code for map search"
+      }
+    },
+    "table": {
+      "title": {
+        "containers": "Containers"
+      },
+      "head": {
+        "action": "Actions"
+      },
+      "buttons": {
+        "edit": "Edit",
+        "delete": "Delete",
+        "page": "Page",
+        "from": "of",
+        "add": "Add +"
+      }
+    }
   }
 }

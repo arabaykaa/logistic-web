@@ -134,9 +134,9 @@ export default function CargoFormModule() {
                 className="p-4 bg-white rounded-lg border border-gray-400 flex flex-col gap-6"
             >
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <TextInput label="clientName" value={formData.clientName} onChange={handleChange("clientName")} />
-                    <TextInput label="containerNumber" value={formData.containerNumber} onChange={handleChange("containerNumber")} />
-                    <TextInput label="expeditor" value={formData.expeditor} onChange={handleChange("expeditor")} />
+                    <TextInput label="clientName" placeholder="clientName" value={formData.clientName} onChange={handleChange("clientName")} />
+                    <TextInput label="containerNumber" placeholder="containerNumber" value={formData.containerNumber} onChange={handleChange("containerNumber")} />
+                    <TextInput label="expeditor" placeholder="expeditor" value={formData.expeditor} onChange={handleChange("expeditor")} />
                     <SelectInput
                         label="isRented"
                         placeholder="choose"
@@ -145,30 +145,31 @@ export default function CargoFormModule() {
                         options={isRentedOptions}
                     />
 
-                    <DateInput label="deliveryDate" value={formData.deliveryDate} onChange={handleDateChange("deliveryDate")} />
-                    <DateInput label="portEntryDate" value={formData.portEntryDate} onChange={handleDateChange("portEntryDate")} />
+                    <DateInput label="deliveryDate" placeholder="deliveryDate" value={formData.deliveryDate} onChange={handleDateChange("deliveryDate")} />
+                    <DateInput label="portEntryDate" placeholder="portEntryDate" value={formData.portEntryDate} onChange={handleDateChange("portEntryDate")} />
 
-                    <DateInput label="documentDeadline" value={formData.documentDeadline} onChange={handleDateChange("documentDeadline")} />
-                    <DateInput label="documentReceivedDate" value={formData.documentReceivedDate} onChange={handleDateChange("documentReceivedDate")} />
-                    <DateInput label="etd" value={formData.etd} onChange={handleDateChange("etd")} />
+                    <DateInput label="documentDeadline" placeholder="documentDeadline" value={formData.documentDeadline} onChange={handleDateChange("documentDeadline")} />
+                    <DateInput label="documentReceivedDate" placeholder="documentReceivedDate" value={formData.documentReceivedDate} onChange={handleDateChange("documentReceivedDate")} />
+                    <DateInput label="etd" placeholder="etd" value={formData.etd} onChange={handleDateChange("etd")} />
 
-                    <DateInput label="atd" value={formData.atd} onChange={handleDateChange("atd")} />
-                    <TextInput label="portStorageDays" value={formData.portStorageDays} onChange={handleChange("portStorageDays")} />
-                    <TextInput label="extraCosts" value={formData.extraCosts} onChange={handleChange("extraCosts")} />
+                    <DateInput label="atd" placeholder="atd" value={formData.atd} onChange={handleDateChange("atd")} />
+                    <TextInput label="portStorageDays" placeholder="portStorageDays" value={formData.portStorageDays} onChange={handleChange("portStorageDays")} />
+                    <TextInput label="extraCosts" placeholder="extraCosts" value={formData.extraCosts} onChange={handleChange("extraCosts")} />
 
-                    <DateInput label="chinaArrivalDate" value={formData.chinaArrivalDate} onChange={handleDateChange("chinaArrivalDate")} />
-                    <DateInput label="inlandDepartureDate" value={formData.inlandDepartureDate} onChange={handleDateChange("inlandDepartureDate")} />
-                    <DateInput label="kashgarArrivalDate" value={formData.kashgarArrivalDate} onChange={handleDateChange("kashgarArrivalDate")} />
+                    <DateInput label="chinaArrivalDate" placeholder="chinaArrivalDate" value={formData.chinaArrivalDate} onChange={handleDateChange("chinaArrivalDate")} />
+                    <DateInput label="inlandDepartureDate" placeholder="inlandDepartureDate" value={formData.inlandDepartureDate} onChange={handleDateChange("inlandDepartureDate")} />
+                    <DateInput label="kashgarArrivalDate" placeholder="kashgarArrivalDate" value={formData.kashgarArrivalDate} onChange={handleDateChange("kashgarArrivalDate")} />
 
-                    <TextInput label="positionStatus" value={formData.positionStatus} onChange={handleChange("positionStatus")} />
-                    <TextInput label="delayReason" value={formData.delayReason} onChange={handleChange("delayReason")} />
-                    <DateInput label="finalArrivalDate" value={formData.finalArrivalDate} onChange={handleDateChange("finalArrivalDate")} />
+                    <TextInput label="positionStatus" placeholder="positionStatus" value={formData.positionStatus} onChange={handleChange("positionStatus")} />
+                    <TextInput label="delayReason" placeholder="delayReason" value={formData.delayReason} onChange={handleChange("delayReason")} />
+                    <DateInput label="finalArrivalDate" placeholder="finalArrivalDate" value={formData.finalArrivalDate} onChange={handleDateChange("finalArrivalDate")} />
 
-                    <TextInput label="notes" value={formData.notes} onChange={handleChange("notes")} />
+                    <TextInput label="notes" placeholder="notes" value={formData.notes} onChange={handleChange("notes")} />
 
                     <TextInput
                         type="number"
                         label="latitude"
+                        placeholder="latitude"
                         value={formData.latitude?.toString()}
                         onChange={handleChange("latitude")}
                     />
@@ -176,12 +177,13 @@ export default function CargoFormModule() {
                     <TextInput
                         type="number"
                         label="longitude"
+                        placeholder="longitude"
                         value={formData.longitude?.toString()}
                         onChange={handleChange("longitude")}
                     />
 
-                    <DateInput label="createdAt" value={formData.createdAt} onChange={handleDateChange("createdAt")} />
-                    <DateInput label="updatedAt" value={formData.updatedAt} onChange={handleDateChange("updatedAt")} />
+                    <DateInput label="createdAt" placeholder="createdAt" value={formData.createdAt} onChange={handleDateChange("createdAt")} />
+                    <DateInput label="updatedAt" placeholder="updatedAt" value={formData.updatedAt} onChange={handleDateChange("updatedAt")} />
                 </div>
 
                 <CustomButton

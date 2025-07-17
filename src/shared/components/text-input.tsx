@@ -4,16 +4,23 @@ import { useTranslation } from "react-i18next";
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     icon?: JSX.Element;
     label?: string;
+    placeholder?: string
+    customPlaceholder?: string
 }
 
-export const TextInput = ({ icon, label, className = "", ...props }: Props) => {
+export const TextInput = ({ icon, label, placeholder, customPlaceholder, className = "", ...props }: Props) => {
     const { t } = useTranslation()
     return (
         <div className="w-full relative">
             {label && <label className="block text-xs font-semibold mb-1">{t(`form.label.${label}`)}</label>}
             <input
+                placeholder={customPlaceholder ? customPlaceholder : (placeholder ? t(`form.label.${placeholder}`) : "")}
                 {...props}
-                className={`w-full px-3 py-[5.2px] text-base rounded-md outline-none bg-white/90 text-gray-900 border border-black/10 transition-all ${icon && "pr-10"} ${className}`}
+                className={`
+                    w-full px-3 py-[5.2px] text-base rounded-md outline-none 
+                    bg-white/90 text-gray-900 border border-black/10 transition-all  
+                    placeholder-gray-400 placeholder:text-sm
+                    ${icon && "pr-10"} ${className}`}
             />
             {icon && (
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 pointer-events-none text-gray-600">
