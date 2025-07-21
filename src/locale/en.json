@@ -28,7 +28,7 @@
     },
     "form": {
       "label": {
-        "clientName": "Client Full Name",
+        "clientName": "Client Name",
         "containerNumber": "Container Number",
         "expeditor": "Expeditor",
         "isRented": "Purchase/Rent",
@@ -57,6 +57,9 @@
         "login": "Login",
         "password": "Password",
         "owner": "Code for map search"
+      },
+      "errors": {
+        "required": "Field is required"
       }
     },
     "table": {

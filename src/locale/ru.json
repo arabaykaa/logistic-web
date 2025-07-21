@@ -28,7 +28,7 @@
     },
     "form": {
       "label": {
-        "clientName": "ФИО клиента",
+        "clientName": "Наименование клиента",
         "containerNumber": "Номер контейнера",
         "expeditor": "Экспедитор",
         "isRented": "Покупка/Аренда",
@@ -57,6 +57,9 @@
         "login": "Логин",
         "password": "Пароль",
         "owner": "Код для поиска на карте"
+      },
+      "errors": {
+        "required": "Поле обязательно"
       }
     },
     "table": {

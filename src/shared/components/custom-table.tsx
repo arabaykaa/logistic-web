@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { CustomButton } from ".";
 import { ChevronLeftIcon, ChevronRightIcon, MenuDeepIcon } from "../assets";
@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 
 export type TableItem = {
     id: number | string;
+    containerNumber: number | string
     [key: string]: any;
 };
 
@@ -34,11 +35,14 @@ export default function CustomTable({
 }: ReusableTableProps) {
     const { t } = useTranslation()
     const [openRowId, setOpenRowId] = useState<string | number | null>(null);
-    const menuRef = useRef<HTMLDivElement | null>(null);
+    // const menuRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+            const target = event.target as HTMLElement;
+
+            // Если клик был не по кнопке и не по меню — закрываем
+            if (!target.closest(".action-menu-button") && !target.closest(".action-menu-dropdown")) {
                 setOpenRowId(null);
             }
         };
@@ -80,14 +84,15 @@ export default function CustomTable({
                                 </td>
                             ))}
                             <td className="px-4 py-2 flex justify-end">
-                                <div className="relative" ref={menuRef}>
+                                <div className="relative">
                                     <CustomButton
                                         text={<MenuDeepIcon />}
                                         style={{ width: "fit-content", fontSize: 12, padding: 2 }}
                                         onClick={() => toggleMenu(item.id)}
+                                        className="action-menu-button"
                                     />
                                     {openRowId === item.id && (
-                                        <div className="absolute z-10 mt-1 bg-white border border-gray-200 rounded shadow-md right-0">
+                                        <div className="absolute z-10 mt-1 bg-white border border-gray-200 rounded shadow-md right-0 action-menu-dropdown">
                                             <button
                                                 onClick={() => onEdit(item)}
                                                 className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-100 cursor-pointer"
@@ -114,7 +119,7 @@ export default function CustomTable({
                     onClick={() => onPageChange(currentPage - 1)}
                     disabled={currentPage === 1}
                     className={`w-6 h-6 flex items-center justify-center rounded-full transition
-                ${currentPage === 1 ? "bg-gray-200 text-gray-400 cursor-not-allowed" : "bg-gray-100 hover:bg-gray-200 text-gray-700 cursor-pointer"}`}
+                    ${currentPage === 1 ? "bg-gray-200 text-gray-400 cursor-not-allowed" : "bg-gray-100 hover:bg-gray-200 text-gray-700 cursor-pointer"}`}
                 >
                     <ChevronLeftIcon />
                 </button>
@@ -125,7 +130,7 @@ export default function CustomTable({
                     onClick={() => onPageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
                     className={`w-6 h-6 flex items-center justify-center rounded-full transition
-                ${currentPage === totalPages ? "bg-gray-200 text-gray-400 cursor-not-allowed" : "bg-gray-100 hover:bg-gray-200 text-gray-700 cursor-pointer "}`}
+                    ${currentPage === totalPages ? "bg-gray-200 text-gray-400 cursor-not-allowed" : "bg-gray-100 hover:bg-gray-200 text-gray-700 cursor-pointer "}`}
                 >
                     <ChevronRightIcon />
                 </button>

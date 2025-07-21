@@ -39,7 +39,7 @@ export default function LoginForm() {
                     type="text"
                     value={login}
                     className="bo"
-                    placeholder="Введите код или логин"
+                    customPlaceholder="Введите код или логин"
                     onChange={(e) => setLogin(e.target.value)} />
             </div>
 
@@ -50,7 +50,7 @@ export default function LoginForm() {
                     id="password"
                     type="password"
                     value={password}
-                    placeholder="Введите код или пароль"
+                    customPlaceholder="Введите код или пароль"
                     onChange={(e) => setPassword(e.target.value)} />
             </div>
 

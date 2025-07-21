@@ -17,6 +17,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import type { CargoRequestType, CargoResponseType } from "../model";
 import { DateInput } from "@/shared/components/date-input";
 import { useTranslation } from "react-i18next";
+import type { OptionType } from "@/shared/global-types";
 
 const RouteBackButton = lazy(() => import("@/shared/components/route-back-button"));
 
@@ -28,6 +29,8 @@ export default function CargoFormModule() {
     const { t } = useTranslation()
     const navigate = useNavigate();
     const { containerId } = useParams<Params>();
+
+    const [errors, setErrors] = useState<Partial<Record<keyof CargoRequestType, string>>>({});
     const [error, setError] = useState<string | null>(null);
 
     const [formData, setFormData] = useState<CargoRequestType>(initialState);
@@ -43,11 +46,8 @@ export default function CargoFormModule() {
 
             setFormData({
                 ...response,
-                latitude: response.latitude ?? null,
-                longitude: response.longitude ?? null,
                 deliveryDate: response.deliveryDate ? new Date(response.deliveryDate) : null,
                 portEntryDate: response.portEntryDate ? new Date(response.portEntryDate) : null,
-                documentDeadline: response.documentDeadline ? new Date(response.documentDeadline) : null,
                 documentReceivedDate: response.documentReceivedDate ? new Date(response.documentReceivedDate) : null,
                 etd: response.etd ? new Date(response.etd) : null,
                 atd: response.atd ? new Date(response.atd) : null,
@@ -55,17 +55,12 @@ export default function CargoFormModule() {
                 inlandDepartureDate: response.inlandDepartureDate ? new Date(response.inlandDepartureDate) : null,
                 kashgarArrivalDate: response.kashgarArrivalDate ? new Date(response.kashgarArrivalDate) : null,
                 finalArrivalDate: response.finalArrivalDate ? new Date(response.finalArrivalDate) : null,
-                createdAt: response.createdAt ? new Date(response.createdAt) : null,
-                updatedAt: response.updatedAt ? new Date(response.updatedAt) : null,
                 isRented: response.isRented ?? null,
                 clientName: response.clientName ?? null,
                 containerNumber: response.containerNumber ?? null,
                 delayReason: response.delayReason ?? null,
-                expeditor: response.expeditor ?? null,
                 extraCosts: response.extraCosts ?? null,
-                notes: response.notes ?? null,
                 portStorageDays: response.portStorageDays ?? null,
-                positionStatus: response.positionStatus ?? null,
             });
 
             setError(null);
@@ -94,16 +89,38 @@ export default function CargoFormModule() {
         }));
     };
 
-    const handleSelectChange = <K extends keyof CargoRequestType>(field: K) =>
-        (option: { value: string } | null) => {
-            setFormData((prev) => ({
-                ...prev,
-                [field]: option?.value ?? null,
-            }));
-        };
+    const handleSelectChange = (field: keyof CargoRequestType) => (option: OptionType | null) => {
+        setFormData((prev) => ({
+            ...prev,
+            [field]: option?.value,
+        }));
+    };
+
+    const validateForm = (): boolean => {
+        const newErrors: Partial<Record<keyof CargoRequestType, string>> = {};
+
+        if (!formData.clientName?.trim()) {
+            newErrors.clientName = t("form.errors.required");
+        }
+        if (!formData.containerNumber?.trim()) {
+            newErrors.containerNumber = t("form.errors.required");
+        }
+        // if (!formData.isRented) {
+        //     newErrors.isRented = t("form.errors.required");
+        // }
+        if (!formData.deliveryDate) {
+            newErrors.deliveryDate = t("form.errors.required");
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+
+        if (!validateForm()) return;
 
         try {
             await apiRequest<CargoRequestType, unknown>(
@@ -134,56 +151,102 @@ export default function CargoFormModule() {
                 className="p-4 bg-white rounded-lg border border-gray-400 flex flex-col gap-6"
             >
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <TextInput label="clientName" placeholder="clientName" value={formData.clientName} onChange={handleChange("clientName")} />
-                    <TextInput label="containerNumber" placeholder="containerNumber" value={formData.containerNumber} onChange={handleChange("containerNumber")} />
-                    <TextInput label="expeditor" placeholder="expeditor" value={formData.expeditor} onChange={handleChange("expeditor")} />
+                    <TextInput
+                        label="clientName"
+                        placeholder="clientName"
+                        value={formData.clientName}
+                        onChange={handleChange("clientName")}
+                        error={errors.clientName}
+                    />
+                    <TextInput
+                        label="containerNumber"
+                        placeholder="containerNumber"
+                        value={formData.containerNumber}
+                        onChange={handleChange("containerNumber")}
+                        error={errors.containerNumber}
+                    />
                     <SelectInput
                         label="isRented"
                         placeholder="choose"
-                        value={isRentedOptions.find((opt) => opt.value === formData.isRented?.value) || null}
+                        value={formData.isRented}
                         onChange={handleSelectChange("isRented")}
                         options={isRentedOptions}
+                        error={errors.isRented}
                     />
 
-                    <DateInput label="deliveryDate" placeholder="deliveryDate" value={formData.deliveryDate} onChange={handleDateChange("deliveryDate")} />
-                    <DateInput label="portEntryDate" placeholder="portEntryDate" value={formData.portEntryDate} onChange={handleDateChange("portEntryDate")} />
-
-                    <DateInput label="documentDeadline" placeholder="documentDeadline" value={formData.documentDeadline} onChange={handleDateChange("documentDeadline")} />
-                    <DateInput label="documentReceivedDate" placeholder="documentReceivedDate" value={formData.documentReceivedDate} onChange={handleDateChange("documentReceivedDate")} />
-                    <DateInput label="etd" placeholder="etd" value={formData.etd} onChange={handleDateChange("etd")} />
-
-                    <DateInput label="atd" placeholder="atd" value={formData.atd} onChange={handleDateChange("atd")} />
-                    <TextInput label="portStorageDays" placeholder="portStorageDays" value={formData.portStorageDays} onChange={handleChange("portStorageDays")} />
-                    <TextInput label="extraCosts" placeholder="extraCosts" value={formData.extraCosts} onChange={handleChange("extraCosts")} />
-
-                    <DateInput label="chinaArrivalDate" placeholder="chinaArrivalDate" value={formData.chinaArrivalDate} onChange={handleDateChange("chinaArrivalDate")} />
-                    <DateInput label="inlandDepartureDate" placeholder="inlandDepartureDate" value={formData.inlandDepartureDate} onChange={handleDateChange("inlandDepartureDate")} />
-                    <DateInput label="kashgarArrivalDate" placeholder="kashgarArrivalDate" value={formData.kashgarArrivalDate} onChange={handleDateChange("kashgarArrivalDate")} />
-
-                    <TextInput label="positionStatus" placeholder="positionStatus" value={formData.positionStatus} onChange={handleChange("positionStatus")} />
-                    <TextInput label="delayReason" placeholder="delayReason" value={formData.delayReason} onChange={handleChange("delayReason")} />
-                    <DateInput label="finalArrivalDate" placeholder="finalArrivalDate" value={formData.finalArrivalDate} onChange={handleDateChange("finalArrivalDate")} />
-
-                    <TextInput label="notes" placeholder="notes" value={formData.notes} onChange={handleChange("notes")} />
-
+                    <DateInput
+                        label="deliveryDate"
+                        placeholder="deliveryDate"
+                        value={formData.deliveryDate}
+                        onChange={handleDateChange("deliveryDate")}
+                        error={errors.deliveryDate}
+                    />
+                    <DateInput
+                        label="portEntryDate"
+                        placeholder="portEntryDate"
+                        value={formData.portEntryDate}
+                        onChange={handleDateChange("portEntryDate")}
+                    />
+                    <DateInput
+                        label="documentReceivedDate"
+                        placeholder="documentReceivedDate"
+                        value={formData.documentReceivedDate}
+                        onChange={handleDateChange("documentReceivedDate")}
+                    />
+                    <DateInput
+                        label="etd"
+                        placeholder="etd"
+                        value={formData.etd}
+                        onChange={handleDateChange("etd")}
+                    />
+                    <DateInput
+                        label="atd"
+                        placeholder="atd"
+                        value={formData.atd}
+                        onChange={handleDateChange("atd")}
+                    />
                     <TextInput
-                        type="number"
-                        label="latitude"
-                        placeholder="latitude"
-                        value={formData.latitude?.toString()}
-                        onChange={handleChange("latitude")}
+                        label="portStorageDays"
+                        placeholder="portStorageDays"
+                        value={formData.portStorageDays ?? ""}
+                        onChange={handleChange("portStorageDays")}
                     />
-
                     <TextInput
-                        type="number"
-                        label="longitude"
-                        placeholder="longitude"
-                        value={formData.longitude?.toString()}
-                        onChange={handleChange("longitude")}
+                        label="extraCosts"
+                        placeholder="extraCosts"
+                        value={formData.extraCosts ?? ""}
+                        onChange={handleChange("extraCosts")}
                     />
-
-                    <DateInput label="createdAt" placeholder="createdAt" value={formData.createdAt} onChange={handleDateChange("createdAt")} />
-                    <DateInput label="updatedAt" placeholder="updatedAt" value={formData.updatedAt} onChange={handleDateChange("updatedAt")} />
+                    <DateInput
+                        label="chinaArrivalDate"
+                        placeholder="chinaArrivalDate"
+                        value={formData.chinaArrivalDate}
+                        onChange={handleDateChange("chinaArrivalDate")}
+                    />
+                    <DateInput
+                        label="inlandDepartureDate"
+                        placeholder="inlandDepartureDate"
+                        value={formData.inlandDepartureDate}
+                        onChange={handleDateChange("inlandDepartureDate")}
+                    />
+                    <DateInput
+                        label="kashgarArrivalDate"
+                        placeholder="kashgarArrivalDate"
+                        value={formData.kashgarArrivalDate}
+                        onChange={handleDateChange("kashgarArrivalDate")}
+                    />
+                    <TextInput
+                        label="delayReason"
+                        placeholder="delayReason"
+                        value={formData.delayReason ?? ""}
+                        onChange={handleChange("delayReason")}
+                    />
+                    <DateInput
+                        label="finalArrivalDate"
+                        placeholder="finalArrivalDate"
+                        value={formData.finalArrivalDate}
+                        onChange={handleDateChange("finalArrivalDate")}
+                    />
                 </div>
 
                 <CustomButton
@@ -199,11 +262,9 @@ export default function CargoFormModule() {
 const initialState: CargoRequestType = {
     clientName: "",
     containerNumber: "",
-    expeditor: "",
     isRented: null,
     deliveryDate: null,
     portEntryDate: null,
-    documentDeadline: null,
     documentReceivedDate: null,
     etd: null,
     atd: null,
@@ -212,13 +273,7 @@ const initialState: CargoRequestType = {
     chinaArrivalDate: null,
     inlandDepartureDate: null,
     kashgarArrivalDate: null,
-    positionStatus: "",
     delayReason: "",
     finalArrivalDate: null,
-    notes: "",
-    latitude: null,
-    longitude: null,
-    createdAt: null,
-    updatedAt: null,
 };
 

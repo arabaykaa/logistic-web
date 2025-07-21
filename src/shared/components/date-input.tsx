@@ -13,6 +13,7 @@ interface Props {
     placeholder?: string;
     name?: string;
     className?: string;
+    error?: string;
 }
 
 export const DateInput = ({
@@ -22,9 +23,11 @@ export const DateInput = ({
     onChange,
     placeholder,
     name,
-    className = ""
+    className = "",
+    error
 }: Props) => {
-    const { t } = useTranslation()
+    const { t } = useTranslation();
+
     const CustomInput = forwardRef<HTMLInputElement, any>(({ value, onClick }, ref) => (
         <div className="relative w-full">
             <input
@@ -36,12 +39,12 @@ export const DateInput = ({
                 onClick={onClick}
                 ref={ref}
                 className={`
-                    w-full px-3 pr-10 py-[5.2px] text-base rounded-md bg-white text-gray-900 border border-gray-300
-                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                    transition-all duration-200 cursor-pointer
+                    w-full px-3 pr-10 py-[5.2px] text-base rounded-md bg-white text-gray-900
+                    border transition-all duration-200 cursor-pointer
                     placeholder-gray-400 placeholder:text-sm
+                    ${error ? "border-red-500 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"}
                     ${className}
-                 `}
+                `}
             />
             <div
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
@@ -56,7 +59,12 @@ export const DateInput = ({
 
     return (
         <div className="w-full">
-            {label && <label className="block text-xs font-semibold mb-1">{t(`form.label.${label}`)}</label>}
+            {label && (
+                <label className="block text-xs font-semibold mb-1 text-gray-700">
+                    {t(`form.label.${label}`)}
+                </label>
+            )}
+
             <DatePicker
                 selected={value}
                 onChange={onChange}
@@ -65,6 +73,12 @@ export const DateInput = ({
                 wrapperClassName="w-full"
                 popperPlacement="bottom-start"
             />
+
+            {error && (
+                <p className="mt-1 text-sm text-red-500">
+                    {error}
+                </p>
+            )}
         </div>
     );
 };

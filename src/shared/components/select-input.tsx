@@ -3,54 +3,79 @@ import type { OptionType } from '../global-types';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
-    value: OptionType | null;
+    value: string | null;
     onChange: (option: OptionType | null) => void;
     options: OptionType[];
     label?: string;
     placeholder?: string;
+    error?: string;
 };
 
-export const SelectInput = ({ value, onChange, options, label, placeholder }: Props) => {
-    const { t } = useTranslation()
+export const SelectInput = ({
+    value,
+    onChange,
+    options,
+    label,
+    placeholder,
+    error,
+}: Props) => {
+    const { t } = useTranslation();
+
     return (
         <div className="w-full">
-            {label && <label className="block text-xs font-semibold mb-1">{t(`form.label.${label}`)}</label>}
+            {label && (
+                <label className="block text-xs font-semibold mb-1 text-gray-700">
+                    {t(`form.label.${label}`)}
+                </label>
+            )}
+
             <Select<OptionType, false>
-                value={value}
+                value={options.find((item) => item.value === value)}
                 onChange={onChange as (option: SingleValue<OptionType>) => void}
                 options={options}
                 isClearable
                 placeholder={t(`form.label.${placeholder}`)}
-                styles={customStyles}
+                styles={getCustomStyles(error)}
             />
-        </div>
-    )
-}
 
-const customStyles: StylesConfig<OptionType, false> = {
+            {error && (
+                <p className="mt-1 text-sm text-red-500">
+                    {error}
+                </p>
+            )}
+        </div>
+    );
+};
+
+
+const getCustomStyles = (error?: string): StylesConfig<OptionType, false> => ({
     control: (provided, state) => ({
         ...provided,
+        borderColor: error ? '#f87171' : (state.isFocused ? '#60a5fa' : '#d1d5db'),
+        boxShadow: 'none',
         '&:hover': {
-            borderColor: state.isFocused ? 'blue' : provided.borderColor,
+            borderColor: error ? '#f87171' : '#9ca3af',
         },
-        borderRadius: "0.5rem",
+        borderWidth: '1px',
+        borderRadius: '0.5rem',
+        fontSize: '14px',
+        minHeight: '38px',
     }),
     option: (provided, state) => ({
         ...provided,
-        backgroundColor: state.isFocused ? '#ddd' : '#fff',
-        color: '#333',
+        backgroundColor: state.isFocused ? '#f3f4f6' : '#fff',
+        color: '#111827',
         cursor: 'pointer',
-        fontSize: "12px",
-        fontWeight: 500
+        fontSize: '14px',
     }),
     menu: (provided) => ({
         ...provided,
         backgroundColor: '#fff',
-        zIndex: 2,
+        zIndex: 10,
     }),
     placeholder: (provided) => ({
         ...provided,
-        fontSize: "14px",
-        color: "oklch(70.7% 0.022 261.325)"
-    })
-};
+        fontSize: '14px',
+        color: '#9ca3af',
+    }),
+});

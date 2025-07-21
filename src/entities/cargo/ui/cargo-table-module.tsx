@@ -20,9 +20,7 @@ export default function CargoTableModule() {
 
     const columns = [
         { key: "clientName", label: "clientName" },
-        { key: "owner", label: "owner" },
-        { key: "latitude", label: "latitude" },
-        { key: "longitude", label: "longitude" },
+        { key: "containerNumber", label: "containerNumber" },
         { key: "deliveryDate", label: "deliveryDate", type: "date" },
         { key: "createdAt", label: "createdAt", type: "date" },
     ];
@@ -73,7 +71,7 @@ export default function CargoTableModule() {
                 currentPage={page}
                 totalPages={totalPages}
                 onPageChange={(p) => setPage(p)}
-                onEdit={(item) => navigate(`edit/${item.id}`)}
+                onEdit={(item) => navigate(`edit/${item.containerNumber}`)}
                 onDelete={(id) => deleteItem(id)}
                 actionComponents={
                     <CustomButton
