@@ -7,11 +7,13 @@
       "en": "English"
     },
     "main": {
+      "searchResult": "Search result",
+      "howToSearch": "To obtain information, enter the container number and click the 'Search' button",
       "input": {
         "enterCode": "Enter cargo code"
       },
       "buttons": {
-        "submit": "Submit"
+        "search": "Search"
       }
     },
     "sidebar": {

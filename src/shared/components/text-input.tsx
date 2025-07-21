@@ -25,7 +25,7 @@ export const TextInput = ({
     const { t } = useTranslation();
 
     const baseStyles = `
-        w-full px-3 py-2 outline-none transition-all 
+        w-full outline-none transition-all 
         placeholder-gray-400 bg-transparent text-gray-900
         ${icon ? "pr-10" : ""}
     `;
@@ -33,13 +33,13 @@ export const TextInput = ({
     const defaultStyles = `
         ${baseStyles}
         bg-white/90 border ${error ? "border-red-500" : "border-black/10"}
-        rounded-md
+        rounded-md px-3 py-2
     `;
 
     const underlineStyles = `
-        text-3xl ${baseStyles}
+        ${baseStyles}
         border-b ${error ? "border-red-500" : "border-black"} border-[2px]
-        focus:border-b-2
+        focus:border-b-2 text-3xl px-1
     `;
 
     return (
