@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { LanguageChanger } from "@/widgets";
+import { LanguageChanger, Loading } from "@/widgets";
 import { apiRequest, CustomButton, Path, TextInput } from "@/shared";
 import type { CargoResponseType } from "@/entities/cargo/model";
 import { useTranslation } from "react-i18next";
@@ -93,6 +93,10 @@ export const MainPage = () => {
                     />
                 </form>
             </div>
+            {isLoading &&
+                <div className="relative h-[50vh]">
+                    <Loading isPageLoading={false} color="text-white" />
+                </div>}
             {data && (
                 <div className="w-full max-w-[35rem] h-auto bg-white shadow-md flex flex-col gap-4 items-start relative p-6 rounded-lg">
                     <h2 className="text-xl font-bold text-[#0e363e]">{t("main.searchResult")}</h2>

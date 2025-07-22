@@ -1,7 +1,13 @@
 import './loading-ui-styles.css'
-export const Loading = () => {
+
+type Props = {
+    isPageLoading?: boolean
+    color?: string
+}
+
+export const Loading = ({ isPageLoading = true, color }: Props) => {
     return (
-        <div className="h-dvh w-screen flex flex-row gap-2 justify-center items-center text-md font-extrabold text-gray-800">
+        <div className={`w-screen flex flex-row gap-2 justify-center items-center text-md font-extrabold ${color ? color : "text-gray-800 "} ${isPageLoading ? "h-dvh" : "h-full"}`}>
 
             <span className="leading-none tracking-none animate-ping">L</span>
 
