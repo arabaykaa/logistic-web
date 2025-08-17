@@ -1,65 +1,19 @@
-import { apiRequest, CustomButton, Path } from "@/shared";
-import { lazy, useCallback, useEffect, useState } from "react";
+import { CustomButton, CustomModal } from "@/shared";
+import { lazy, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { CargoResponseTypeForTable } from "../model";
-import type { TableItem } from "@/shared/components/custom-table";
 import { useTranslation } from "react-i18next";
+import { CargoFilterModal } from "./cargo-filter-modal";
+import { columns } from "./constants";
+import { useCargoTable } from "../hooks/useCargoActions";
 
 const CustomTable = lazy(() => import("@/shared/components/custom-table"));
 
-const LIMIT = 10;
-
 export default function CargoTableModule() {
     const { t } = useTranslation()
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const [data, setData] = useState<TableItem[]>([]);
-    const [error, setError] = useState<string | null>(null);
+    const { data, page, setPage, totalPages, error, handleDelete, setFilter } = useCargoTable();
+    const [isOpen, setIsOpen] = useState(false);
 
     const navigate = useNavigate();
-
-    const columns = [
-        { key: "clientName", label: "clientName" },
-        { key: "containerNumber", label: "containerNumber" },
-        { key: "deliveryDate", label: "deliveryDate", type: "date" },
-        { key: "createdAt", label: "createdAt", type: "date" },
-    ];
-
-    const fetchData = useCallback(async () => {
-        try {
-            const response = await apiRequest<void, CargoResponseTypeForTable>(
-                "GET",
-                Path.Containers.getAll({ page: page, limit: LIMIT })
-            );
-            const mappedData = response.data.map((item) => ({
-                ...item,
-                id: item._id,
-            }));
-            setData(mappedData);
-            setTotalPages(response.totalPages);
-            setError(null);
-        } catch (err) {
-            console.error(err);
-            setError("Ошибка при загрузке данных");
-        }
-    }, [page])
-
-    useEffect(() => {
-        fetchData();
-    }, [page]);
-
-    const deleteItem = async (id: string | number) => {
-        const confirmed = window.confirm("Вы уверены, что хотите удалить этот контейнер?");
-        if (!confirmed) return;
-
-        try {
-            await apiRequest("DELETE", Path.Containers.delete(id));
-            setData((prev) => prev.filter((item) => item.id !== id));
-        } catch (err) {
-            console.error(err);
-            alert("Ошибка при удалении");
-        }
-    };
 
     return (
         <>
@@ -72,13 +26,33 @@ export default function CargoTableModule() {
                 totalPages={totalPages}
                 onPageChange={(p) => setPage(p)}
                 onEdit={(item) => navigate(`edit/${item.containerNumber}`)}
-                onDelete={(id) => deleteItem(id)}
+                onDelete={(id) => handleDelete(id)}
                 actionComponents={
-                    <CustomButton
-                        text={t("table.buttons.add")}
-                        style={{ width: "fit-content" }}
-                        onClick={() => navigate("add")}
-                    />
+                    <div className="flex gap-2">
+                        <CustomButton
+                            text={t("table.buttons.add")}
+                            style={{ width: "fit-content" }}
+                            onClick={() => navigate("add")}
+                        />
+                        <CustomButton
+                            text={t("table.buttons.filter")}
+                            style={{ width: "fit-content" }}
+                            onClick={() => setIsOpen(true)}
+                        />
+                    </div>
+                }
+            />
+            <CustomModal
+                width="50%"
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                title={t("table.filter.title")}
+                children={
+                    <CargoFilterModal
+                        onSubmit={(values) => {
+                            setFilter(values);
+                            setIsOpen(false);
+                        }} />
                 }
             />
         </>

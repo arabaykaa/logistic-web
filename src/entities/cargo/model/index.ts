@@ -26,3 +26,8 @@ export interface CargoResponseTypeForTable {
   totalCount: number;
   totalPages: number;
 }
+
+export interface CargoSearchParams {
+  clientName?: string;
+  containerNumber?: string;
+}

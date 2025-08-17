@@ -5,3 +5,4 @@ export { MenuDeepIcon } from "./menu-deep";
 export { ChevronRightIcon } from "./chevron-right";
 export { ChevronLeftIcon } from "./chevron-left";
 export { CalendarIcon } from "./calendar";
+export { XIcon } from "./x-icon";
